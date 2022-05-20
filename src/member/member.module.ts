@@ -3,12 +3,17 @@ import { MemberService } from './member.service';
 import { MemberController } from './member.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MemberEntity } from './entities/member.entity';
-import { EmployeeService } from 'src/employee/employee.service';
-import { EmployeeEntity } from 'src/employee/entities/employee.entity';
+import { EmployeeModule } from 'src/employee/employee.module';
+import { BlockChainModule } from 'src/blockchain/blockchain.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([MemberEntity, EmployeeEntity])],
+  imports: [
+    TypeOrmModule.forFeature([MemberEntity]),
+
+    EmployeeModule,
+    BlockChainModule,
+  ],
   controllers: [MemberController],
-  providers: [MemberService, EmployeeService],
+  providers: [MemberService],
 })
 export class MemberModule {}

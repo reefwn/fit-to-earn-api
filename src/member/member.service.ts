@@ -10,6 +10,14 @@ export class MemberService {
     private readonly memberRepo: Repository<MemberEntity>,
   ) {}
 
+  create(dto: Partial<MemberEntity>) {
+    return this.memberRepo.create(dto);
+  }
+
+  async save(entity: MemberEntity) {
+    return this.memberRepo.save(entity);
+  }
+
   findOneForLogin(email: string) {
     return this.memberRepo.findOne({
       where: { email, verify_email: Not(IsNull()), deleted_at: IsNull() },

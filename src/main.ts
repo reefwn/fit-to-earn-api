@@ -14,18 +14,17 @@ import { join } from 'path';
 import { AppModule } from 'src/app/app.module';
 
 import * as helmet from 'fastify-helmet';
-import * as parser from 'body-parser';
+import { AllExceptionsFilter } from './filters/http-exception.filter';
 
 const port = process.env.PORT || 9000;
-const requestLimitConfig = {
-  limit: process.env.REQUEST_LIMIT_SIZE || '1mb',
-  extended: true,
-};
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter(),
+    new FastifyAdapter({
+      logger: true,
+      bodyLimit: +process.env.REQUEST_LIMIT_SIZE || 1048576,
+    }),
   );
 
   await app.register(helmet, {
@@ -50,9 +49,8 @@ async function bootstrap() {
     templates: join(__dirname, '..', 'views'),
   });
 
-  app.use(parser.json(requestLimitConfig));
-  app.use(parser.urlencoded(requestLimitConfig));
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.useGlobalFilters(new AllExceptionsFilter());
   app.enableCors();
 
   const config = new DocumentBuilder()

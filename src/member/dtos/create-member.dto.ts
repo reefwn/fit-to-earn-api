@@ -1,29 +1,44 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsEnum, IsOptional } from 'class-validator';
+import {
+  IsDateString,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsNumberString,
+  IsOptional,
+} from 'class-validator';
 import { Gender } from '../enums/gender.enum';
 
 export class CreateMemberDto {
   @ApiProperty()
+  @IsNotEmpty()
   employee_code: string;
 
   @ApiProperty()
+  @IsNotEmpty()
   first_name: string;
 
   @ApiProperty()
+  @IsNotEmpty()
   last_name: string;
 
   @ApiProperty()
-  nick_name: string;
+  @IsNotEmpty()
+  nickname: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: true })
+  @IsEmail()
   @Transform(({ value }) => value.trim().toLowerCase())
   email: string;
 
   @ApiProperty()
+  @IsNotEmpty()
   password: string;
 
   @ApiProperty()
+  @IsNotEmpty()
+  @IsNumberString()
   tel: string;
 
   @ApiPropertyOptional()
@@ -32,6 +47,7 @@ export class CreateMemberDto {
 
   @ApiPropertyOptional()
   @IsOptional()
+  @IsDateString()
   birthdate: string;
 
   @ApiPropertyOptional()
