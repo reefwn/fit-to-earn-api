@@ -5,13 +5,13 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { Response } from 'fastify-helmet';
+import { FastifyReply } from 'fastify';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>();
+    const response = ctx.getResponse<FastifyReply>();
     const status =
       exception instanceof HttpException
         ? exception.getStatus()
@@ -22,7 +22,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       stack = exception.stack;
     }
     if (exception && exception.response && exception.response.message) {
-      return response.status(status).json({
+      return response.status(status).send({
         ok: false,
         error: {
           ...exception.response,
@@ -32,7 +32,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         },
       });
     }
-    response.status(status).json({
+    response.status(status).send({
       ok: false,
       error: {
         ...exception.response,
