@@ -1,4 +1,4 @@
-import { Exclude } from 'class-transformer';
+import { Exclude, Transform } from 'class-transformer';
 import { BaseEntity } from 'src/entities/base.entities';
 import { Gender } from 'src/member/enums/gender.enum';
 import { UserAppTokenEntity } from 'src/user-apptoken/entities/user-apptoken.entity';
@@ -66,6 +66,7 @@ export class MemberEntity extends BaseEntity {
   otp_refcode: string;
 
   @Column()
+  @Transform(({ value }) => value && `${process.env.IMAGE_URL}${value}`)
   profile_image: string;
 
   @Column()
