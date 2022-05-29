@@ -4,40 +4,37 @@ import { Status } from '../enums/status.enum';
 
 @Entity({ name: 'employees' })
 export class EmployeeEntity extends BaseEntity {
-  @Column()
+  @Column({ nullable: true })
   code: string;
 
-  @Column()
-  type: string;
-
-  @Column()
+  @Column({ nullable: true })
   first_name: string;
 
-  @Column()
+  @Column({ nullable: true })
   last_name: string;
 
-  @Column()
+  @Column({ nullable: true })
   citizen_id: string;
 
-  @Column()
+  @Column({ nullable: true })
   status: Status;
 
-  @Column()
+  @Column({ nullable: true })
   genpo: string;
 
-  @Column()
+  @Column({ nullable: true })
   section: string;
 
-  @Column()
+  @Column({ nullable: true })
   department: string;
 
-  @Column()
+  @Column({ nullable: true })
   division: string;
 
-  @Column()
+  @Column({ nullable: true })
   company_email: string;
 
-  @Column()
+  @Column({ nullable: true })
   interface_date: Date;
 
   @CreateDateColumn()

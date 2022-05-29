@@ -9,6 +9,7 @@ import { MobileVersionModule } from 'src/mobile-version/mobile-version.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { UserAppTokenModule } from 'src/user-apptoken/user-apptoken.module';
+import { JwtStrategy } from 'src/guards/jwt.guard';
 
 @Module({
   imports: [
@@ -25,6 +26,6 @@ import { UserAppTokenModule } from 'src/user-apptoken/user-apptoken.module';
     UserAppTokenModule,
   ],
   controllers: [MemberController],
-  providers: [MemberService],
+  providers: [MemberService, JwtStrategy],
 })
 export class MemberModule {}

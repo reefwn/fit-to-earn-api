@@ -15,6 +15,7 @@ import { AppService } from './app.service';
       database: process.env.DB_DATABASE || 'fit_to_earn',
 
       entities: [`${__dirname}/../**/*.entity.{ts,js}`],
+      synchronize: true,
     }),
 
     MemberModule,

@@ -59,6 +59,7 @@ async function bootstrap() {
     .setVersion(
       `${process.env.API_VERSION || 1}.${process.env.API_SUB_VERSION || 0}`,
     )
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);

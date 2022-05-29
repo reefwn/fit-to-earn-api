@@ -13,11 +13,11 @@ export class LoginReqDto {
 
   @ApiPropertyOptional()
   @IsOptional()
-  token_device: string;
+  device_type: string;
 
   @ApiPropertyOptional()
   @IsOptional()
-  type_device: string;
+  token: string;
 }
 
 export class LoginResDto {

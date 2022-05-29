@@ -11,6 +11,9 @@ export class MobileVersionService {
   ) {}
 
   async findCurrentVersion() {
-    return this.mobileVersionRepo.findOne({ order: { created_at: 'DESC' } });
+    return this.mobileVersionRepo.findOne({
+      where: {},
+      order: { created_at: 'DESC' },
+    });
   }
 }

@@ -10,12 +10,8 @@ export class UserAppTokenService {
     private readonly userAppTokenRepo: Repository<UserAppTokenEntity>,
   ) {}
 
-  createFromParam(memberId: number, deviceType: string, token: string) {
-    return this.userAppTokenRepo.create({
-      member_id: memberId,
-      device_type: deviceType,
-      token,
-    });
+  create(dto: Partial<UserAppTokenEntity>) {
+    return this.userAppTokenRepo.create(dto);
   }
 
   async save(entity: UserAppTokenEntity) {

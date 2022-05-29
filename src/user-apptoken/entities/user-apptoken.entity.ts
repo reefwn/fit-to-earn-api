@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   UpdateDateColumn,
 } from 'typeorm';
@@ -26,5 +27,6 @@ export class UserAppTokenEntity extends BaseEntity {
   updated_at: Date;
 
   @ManyToOne(() => MemberEntity, (member) => member.apptokens)
+  @JoinColumn({ name: 'member_id' })
   member: MemberEntity;
 }

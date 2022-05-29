@@ -3,28 +3,28 @@ import { Column, CreateDateColumn, Entity, UpdateDateColumn } from 'typeorm';
 
 @Entity({ name: 'mobile_versions' })
 export class MobileVersionEntity extends BaseEntity {
-  @Column()
+  @Column({ nullable: true })
   number: string;
 
-  @Column()
+  @Column({ nullable: true })
   detail: string;
 
-  @Column()
+  @Column({ type: 'timestamp', nullable: true })
   published_at: Date;
 
-  @Column()
+  @Column({ nullable: true })
   link: string;
 
-  @Column()
+  @Column({ default: false })
   is_maintenance: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   maintenance_title: string;
 
-  @Column()
+  @Column({ nullable: true })
   maintenance_description: string;
 
-  @Column()
+  @Column({ nullable: true })
   member_whitelist: string;
 
   @CreateDateColumn()
@@ -32,4 +32,9 @@ export class MobileVersionEntity extends BaseEntity {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  whitelistMember(memberId: number) {
+    const whitelist = JSON.parse(this.member_whitelist);
+    return whitelist.includes(memberId);
+  }
 }
