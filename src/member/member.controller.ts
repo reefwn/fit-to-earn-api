@@ -3,24 +3,18 @@ import {
   Body,
   Post,
   BadRequestException,
-  UseGuards,
-  Get,
+  NotFoundException,
 } from '@nestjs/common';
 import { MemberService } from './member.service';
 import { LoginReqDto, LoginResDto } from './dtos/login.dto';
 import { CreateMemberDto } from './dtos/create-member.dto';
 import { EmployeeService } from 'src/employee/employee.service';
-import { getMessage } from 'src/utils/messages';
+import { getMessage, MessagesKey } from 'src/utils/messages';
 import { InjectLanguage } from 'src/decorators/inject-language.decorator';
 import { BlockChainService } from 'src/blockchain/blockchain.service';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MobileVersionService } from 'src/mobile-version/mobile-version.service';
 import { UserAppTokenService } from 'src/user-apptoken/user-apptoken.service';
-import {
-  InjectMemberInfo,
-  JwtAuthGuard,
-  MemberInfo,
-} from 'src/guards/jwt.guard';
 
 @Controller('member')
 @ApiTags('Members')
@@ -42,13 +36,13 @@ export class MemberController {
       citizen_id,
     );
     if (!employee) {
-      const message = getMessage(lang, 'EMPLOYEE_ID_NOT_FOUND');
+      const message = getMessage(lang, MessagesKey.EMPLOYEE_ID_NOT_FOUND);
       throw new BadRequestException(message, message);
     }
 
     const existing = await this.memberService.findDuplicateMember(body);
     if (existing.length > 0) {
-      const message = getMessage(lang, 'ALREADY_REGISTERED');
+      const message = getMessage(lang, MessagesKey.ALREADY_REGISTERED);
       throw new BadRequestException(message, message);
     }
 
@@ -75,15 +69,16 @@ export class MemberController {
     const { username, password, device_type, token } = body;
     const member = await this.memberService.findOneForLogin(username);
     if (!member) {
-      const message = getMessage(lang, 'DATA_NOT_FOUND');
-      throw new BadRequestException(message, message);
+      const message = getMessage(lang, MessagesKey.DATA_NOT_FOUND);
+      throw new NotFoundException(message, message);
     }
 
     const version = await this.mobileVersionService.findCurrentVersion();
     if (version.is_maintenance) {
       if (!version.whitelistMember(member.id)) {
         const message =
-          version.maintenance_title || getMessage(lang, 'UNAUTHORIZE');
+          version.maintenance_title ||
+          getMessage(lang, MessagesKey.UNAUTHORIZE);
         throw new BadRequestException(message, message);
       }
     }
